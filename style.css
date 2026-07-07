@@ -1,0 +1,164 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+body {
+  background: #f1f5f9;
+  color: #0f172a;
+  padding: 16px;
+}
+
+.login-body {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.login-card {
+  width: 100%;
+  max-width: 380px;
+  background: white;
+  padding: 28px;
+  border-radius: 22px;
+  box-shadow: 0 20px 40px rgba(15, 23, 42, 0.12);
+}
+
+.login-card h1 {
+  margin-bottom: 6px;
+}
+
+.login-card p {
+  color: #64748b;
+  margin-bottom: 24px;
+}
+
+label {
+  display: block;
+  margin-top: 14px;
+  margin-bottom: 6px;
+  font-weight: bold;
+}
+
+input,
+select,
+textarea {
+  width: 100%;
+  padding: 13px;
+  border: 1px solid #cbd5e1;
+  border-radius: 12px;
+  font-size: 15px;
+}
+
+button {
+  width: 100%;
+  margin-top: 20px;
+  padding: 14px;
+  border: none;
+  border-radius: 14px;
+  background: #0f172a;
+  color: white;
+  font-size: 16px;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+button:hover {
+  opacity: 0.92;
+}
+
+#mensagem {
+  display: block;
+  margin-top: 14px;
+  color: #dc2626;
+  font-weight: bold;
+  text-align: center;
+}
+
+.container {
+  max-width: 1100px;
+  margin: auto;
+}
+
+.topo {
+  background: linear-gradient(135deg, #0f172a, #1e293b);
+  color: white;
+  padding: 24px;
+  border-radius: 22px;
+  margin-bottom: 24px;
+  display: flex;
+  justify-content: space-between;
+  gap: 16px;
+  align-items: center;
+}
+
+.tag {
+  display: inline-block;
+  background: #22c55e;
+  color: white;
+  padding: 6px 12px;
+  border-radius: 999px;
+  font-size: 13px;
+  margin-bottom: 10px;
+}
+
+.topo h1 {
+  margin-bottom: 6px;
+}
+
+.topo p {
+  color: #cbd5e1;
+}
+
+.btn-sair {
+  width: auto;
+  background: #dc2626;
+  margin-top: 0;
+  padding: 12px 18px;
+}
+
+.grid-dashboard {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 18px;
+}
+
+.card-menu {
+  background: white;
+  padding: 22px;
+  border-radius: 20px;
+  box-shadow: 0 12px 30px rgba(15, 23, 42, 0.08);
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+.card-menu:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 18px 36px rgba(15, 23, 42, 0.12);
+}
+
+.card-menu h2 {
+  margin-bottom: 10px;
+}
+
+.card-menu p {
+  color: #64748b;
+}
+
+@media (max-width: 800px) {
+  .topo {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .btn-sair {
+    width: 100%;
+  }
+
+  .grid-dashboard {
+    grid-template-columns: 1fr;
+  }
+}
