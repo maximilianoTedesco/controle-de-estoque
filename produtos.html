@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="pt-PT">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <title>Produtos | Controle de Estoque</title>
+
+  <link rel="stylesheet" href="style.css" />
+</head>
+
+<body>
+
+  <div class="container">
+
+    <header class="topo">
+      <div>
+        <button class="btn-voltar" onclick="window.location.href='admin.html'">
+          ← Painel
+        </button>
+
+        <h1>📦 Produtos</h1>
+        <p>Cadastro de mercadorias da rede.</p>
+      </div>
+    </header>
+
+    <section class="card">
+      <h2 id="tituloFormulario">Novo produto</h2>
+
+      <input type="hidden" id="produtoId" />
+
+      <label>Nome do produto</label>
+      <input type="text" id="nomeProduto" placeholder="Ex: Arroz" />
+
+      <label>Categoria</label>
+      <select id="categoriaProduto">
+        <option value="">Selecione uma categoria</option>
+      </select>
+
+      <label>Unidade de medida</label>
+      <select id="unidadeProduto">
+        <option value="">Selecione</option>
+        <option value="KG">KG</option>
+        <option value="G">G</option>
+        <option value="L">L</option>
+        <option value="ML">ML</option>
+        <option value="UN">UN</option>
+        <option value="CX">CX</option>
+        <option value="PCT">PCT</option>
+      </select>
+
+      <label>Estoque mínimo</label>
+      <input type="number" id="estoqueMinimo" placeholder="Ex: 10" step="0.01" />
+
+      <button onclick="salvarProduto()">Salvar produto</button>
+      <button class="btn-cinza" onclick="limparFormulario()">Limpar</button>
+
+      <span id="mensagem"></span>
+    </section>
+
+    <section class="card">
+      <h2>Produtos cadastrados</h2>
+
+      <div id="listaProdutos" class="lista"></div>
+    </section>
+
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="supabase.js"></script>
+
+  <script>
+    const usuario = JSON.parse(localStorage.getItem("usuarioEstoque"));
+
+    if (!usuario) {
+      window.location.href = "index.html";
+    }
+
+    carregarCategorias();
+    carregarProdutos();
+
+    async function carregarCategorias() {
+      const select = document.getElementById("categoriaProduto");
+
+      const { data, error } = await supabaseClient
+        .from("categorias")
+        .select("*")
+        .eq("ativo", true)
+        .order("nome", { ascending: true });
+
+      if (error) {
+        console.error(error);
+        return;
+      }
+
+      select.innerHTML = '<option value="">Selecione uma categoria</option>';
+
+      data.forEach(categoria => {
+        select.innerHTML += `
+          <option value="${categoria.id}">
+            ${categoria.nome}
+          </option>
+        `;
+      });
+    }
+
+    async function carregarProdutos() {
+      const lista = document.getElementById("listaProdutos");
+
+      lista.innerHTML = "Carregando produtos...";
+
+      const { data, error } = await supabaseClient
+        .from("produtos")
+        .select(`
+          id,
+          nome,
+          unidade,
+          estoque_minimo,
+          ativo,
+          categoria_id,
+          categorias (
+            nome
+          )
+        `)
+        .order("nome", { ascending: true });
+
+      if (error) {
+        console.error(error);
+        lista.innerHTML = "Erro ao carregar produtos.";
+        return;
+      }
+
+      if (!data.length) {
+        lista.innerHTML = "Nenhum produto cadastrado.";
+        return;
+      }
+
+      lista.innerHTML = "";
+
+      data.forEach(produto => {
+        const status = produto.ativo ? "Ativo" : "Inativo";
+        const classeStatus = produto.ativo ? "status-ativo" : "status-inativo";
+
+        lista.innerHTML += `
+          <div class="item-lista">
+            <div>
+              <strong>${produto.nome}</strong>
+              <p>
+                Categoria: ${produto.categorias?.nome || "Sem categoria"} |
+                Unidade: ${produto.unidade} |
+                Mínimo: ${produto.estoque_minimo}
+              </p>
+              <span class="${classeStatus}">${status}</span>
+            </div>
+
+            <div class="acoes">
+              <button onclick='editarProduto(${JSON.stringify(produto)})'>
+                Editar
+              </button>
+
+              <button class="btn-vermelho" onclick="alternarStatusProduto('${produto.id}', ${produto.ativo})">
+                ${produto.ativo ? "Inativar" : "Ativar"}
+              </button>
+            </div>
+          </div>
+        `;
+      });
+    }
+
+    async function salvarProduto() {
+      const id = document.getElementById("produtoId").value;
+      const nome = document.getElementById("nomeProduto").value.trim();
+      const categoria_id = document.getElementById("categoriaProduto").value || null;
+      const unidade = document.getElementById("unidadeProduto").value;
+      const estoque_minimo = Number(document.getElementById("estoqueMinimo").value || 0);
+      const mensagem = document.getElementById("mensagem");
+
+      mensagem.textContent = "";
+
+      if (!nome || !unidade) {
+        mensagem.textContent = "Informe nome e unidade do produto.";
+        return;
+      }
+
+      const payload = {
+        nome,
+        categoria_id,
+        unidade,
+        estoque_minimo
+      };
+
+      let resultado;
+
+      if (id) {
+        resultado = await supabaseClient
+          .from("produtos")
+          .update(payload)
+          .eq("id", id);
+      } else {
+        resultado = await supabaseClient
+          .from("produtos")
+          .insert([payload]);
+      }
+
+      if (resultado.error) {
+        console.error(resultado.error);
+        mensagem.textContent = "Erro ao salvar produto.";
+        return;
+      }
+
+      mensagem.textContent = "Produto salvo com sucesso.";
+
+      limparFormulario();
+      carregarProdutos();
+    }
+
+    function editarProduto(produto) {
+      document.getElementById("tituloFormulario").textContent = "Editar produto";
+      document.getElementById("produtoId").value = produto.id;
+      document.getElementById("nomeProduto").value = produto.nome;
+      document.getElementById("categoriaProduto").value = produto.categoria_id || "";
+      document.getElementById("unidadeProduto").value = produto.unidade;
+      document.getElementById("estoqueMinimo").value = produto.estoque_minimo;
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    }
+
+    async function alternarStatusProduto(id, ativoAtual) {
+      const { error } = await supabaseClient
+        .from("produtos")
+        .update({ ativo: !ativoAtual })
+        .eq("id", id);
+
+      if (error) {
+        console.error(error);
+        alert("Erro ao alterar status do produto.");
+        return;
+      }
+
+      carregarProdutos();
+    }
+
+    function limparFormulario() {
+      document.getElementById("tituloFormulario").textContent = "Novo produto";
+      document.getElementById("produtoId").value = "";
+      document.getElementById("nomeProduto").value = "";
+      document.getElementById("categoriaProduto").value = "";
+      document.getElementById("unidadeProduto").value = "";
+      document.getElementById("estoqueMinimo").value = "";
+    }
+  </script>
+
+</body>
+</html>
