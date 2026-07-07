@@ -162,3 +162,94 @@ button:hover {
     grid-template-columns: 1fr;
   }
 }
+
+.card {
+  background: white;
+  border-radius: 20px;
+  padding: 22px;
+  margin-bottom: 22px;
+  box-shadow: 0 12px 30px rgba(15, 23, 42, 0.08);
+}
+
+.btn-voltar {
+  width: auto;
+  margin-bottom: 14px;
+  background: #334155;
+  padding: 10px 14px;
+}
+
+.btn-cinza {
+  background: #64748b;
+}
+
+.btn-vermelho {
+  background: #dc2626;
+}
+
+.lista {
+  margin-top: 16px;
+}
+
+.item-lista {
+  background: #f8fafc;
+  border: 1px solid #e2e8f0;
+  border-radius: 16px;
+  padding: 16px;
+  margin-bottom: 12px;
+  display: flex;
+  justify-content: space-between;
+  gap: 14px;
+  align-items: center;
+}
+
+.item-lista p {
+  color: #64748b;
+  margin-top: 4px;
+  margin-bottom: 8px;
+}
+
+.acoes {
+  display: flex;
+  gap: 8px;
+}
+
+.acoes button {
+  width: auto;
+  margin-top: 0;
+  padding: 10px 12px;
+  font-size: 14px;
+}
+
+.status-ativo,
+.status-inativo {
+  display: inline-block;
+  padding: 5px 10px;
+  border-radius: 999px;
+  font-size: 13px;
+  font-weight: bold;
+}
+
+.status-ativo {
+  background: #dcfce7;
+  color: #166534;
+}
+
+.status-inativo {
+  background: #fee2e2;
+  color: #991b1b;
+}
+
+@media (max-width: 700px) {
+  .item-lista {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .acoes {
+    width: 100%;
+  }
+
+  .acoes button {
+    flex: 1;
+  }
+}
