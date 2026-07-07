@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="pt-PT">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <title>Painel | Controle de Estoque</title>
+
+  <link rel="stylesheet" href="style.css" />
+</head>
+
+<body>
+
+  <div class="container">
+
+    <header class="topo">
+      <div>
+        <span class="tag">Rede de Restaurantes</span>
+        <h1>Painel de Estoque</h1>
+        <p id="usuarioLogado">Carregando usuário...</p>
+      </div>
+
+      <button class="btn-sair" onclick="sair()">Sair</button>
+    </header>
+
+    <main class="grid-dashboard">
+
+      <section class="card-menu" onclick="abrirPagina('restaurantes.html')">
+        <h2>🏪 Restaurantes</h2>
+        <p>Gerenciar unidades da rede.</p>
+      </section>
+
+      <section class="card-menu" onclick="abrirPagina('produtos.html')">
+        <h2>📦 Produtos</h2>
+        <p>Cadastro de mercadorias.</p>
+      </section>
+
+      <section class="card-menu" onclick="abrirPagina('fornecedores.html')">
+        <h2>🚚 Fornecedores</h2>
+        <p>Cadastro de fornecedores.</p>
+      </section>
+
+      <section class="card-menu" onclick="abrirPagina('movimentacoes.html')">
+        <h2>🔄 Movimentações</h2>
+        <p>Entrada, saída, consumo e desperdício.</p>
+      </section>
+
+      <section class="card-menu" onclick="abrirPagina('estoque.html')">
+        <h2>📊 Estoque Atual</h2>
+        <p>Saldo por restaurante e produto.</p>
+      </section>
+
+      <section class="card-menu" onclick="abrirPagina('relatorios.html')">
+        <h2>📈 Relatórios</h2>
+        <p>Custos, consumo e perdas.</p>
+      </section>
+
+    </main>
+
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="supabase.js"></script>
+  <script src="admin.js"></script>
+</body>
+</html>
