@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="pt-PT">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <title>Login | Controle de Estoque</title>
+
+  <link rel="stylesheet" href="style.css" />
+</head>
+
+<body class="login-body">
+
+  <main class="login-card">
+    <h1>Controle de Estoque</h1>
+    <p>Rede de Restaurantes</p>
+
+    <label>Email</label>
+    <input type="email" id="email" placeholder="admin@estoque.com" />
+
+    <label>Senha</label>
+    <input type="password" id="senha" placeholder="Digite sua senha" />
+
+    <button onclick="login()">Entrar</button>
+
+    <span id="mensagem"></span>
+  </main>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="supabase.js"></script>
+  <script src="login.js"></script>
+</body>
+</html>
