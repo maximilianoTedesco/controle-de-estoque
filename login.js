@@ -10,18 +10,26 @@ async function login() {
     return;
   }
 
-  const { data, error } = await supabaseClient
-    .from("usuarios")
-    .select("*")
-    .eq("email", email)
-    .eq("senha", senha)
-    .eq("ativo", true)
-    .single();
-
-  if (error || !data) {
-    mensagem.textContent = "Email ou senha inválidos.";
-    return;
-  }
+    const { data, error } = await supabaseClient
+        .from("usuarios")
+        .select("*")
+        .eq("email", email)
+        .eq("senha", senha)
+        .eq("ativo", true);
+    
+    console.log("Erro:", error);
+    console.log("Dados:", data);
+    
+    if (error) {
+        console.error(error);
+        mensagem.textContent = error.message;
+        return;
+    }
+    
+    if (!data || data.length === 0) {
+        mensagem.textContent = "Usuário não encontrado.";
+        return;
+    }
 
   localStorage.setItem("usuarioEstoque", JSON.stringify(data));
 
